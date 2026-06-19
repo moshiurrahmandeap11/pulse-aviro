@@ -99,7 +99,7 @@ const OnBoardPage = () => {
       console.log("Organization created:", res.data);
       
       // Redirect to admin dashboard after successful creation
-      window.location.href = "https://pulse.aviro24.shop/admin";
+      window.location.href = "https://pulse.aviro24.shop/admin/dashboard";
     } catch (err: any) {
       console.error("Error creating organization:", err);
       setError(

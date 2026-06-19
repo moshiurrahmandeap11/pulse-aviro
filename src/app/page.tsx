@@ -181,9 +181,9 @@ export default function Home() {
     const org = empProfile.organization as Organization;
     
     if (empProfile.id === org.owner_id) {
-      router.push("https://pulse.aviro24.shop/admin");
+      router.push("https://pulse.aviro24.shop/admin/dashboard");
     } else {
-      router.push("https://pulse.aviro24.shop/employee");
+      router.push("https://pulse.aviro24.shop/employee/dashboard");
     }
   }, [empProfile, error, router]);
 
