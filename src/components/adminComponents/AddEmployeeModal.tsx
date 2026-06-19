@@ -390,7 +390,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
 
     try {
       // 1. Create employee
-      const payload = {
+      const payload: any = {
         first_name: formData.first_name.trim(),
         last_name: formData.last_name.trim() || undefined,
         email: formData.email.trim(),
@@ -401,6 +401,11 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
         schedule_ids: formData.schedule_ids.length > 0 ? formData.schedule_ids : undefined,
         position_ids: formData.position_ids.length > 0 ? formData.position_ids : undefined,
       };
+
+      // Include organization_id if available
+      if (organizationId) {
+        payload.organization_id = organizationId;
+      }
 
       const res = await apiClient2.post("/employees", payload);
 
