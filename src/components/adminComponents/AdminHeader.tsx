@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import EmployeeProfile from "./EmployeeProfile";
+import { EmployeeProfileData } from "./EmployeeProfile";
 
 interface SubMenuItem {
   label: string;
@@ -41,9 +43,10 @@ const menuItems: MenuItem[] = [
   { label: "Reports", href: "/admin/reports" },
 ];
 
-const AdminHeader = () => {
+const AdminHeader = ({ profileData }: { profileData?: EmployeeProfileData }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const toggleSubMenu = (label: string) => {
     setOpenSubMenu(openSubMenu === label ? null : label);
@@ -176,7 +179,10 @@ const AdminHeader = () => {
             </button>
 
             {/* Profile */}
-            <button className="text-neutral-400 hover:text-white p-2 rounded-md hover:bg-neutral-800 transition-colors">
+            <button 
+              onClick={() => setProfileOpen(!profileOpen)}
+              className="text-neutral-400 hover:text-white p-2 rounded-md hover:bg-neutral-800 transition-colors relative"
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -213,6 +219,40 @@ const AdminHeader = () => {
           </button>
         </div>
       </div>
+
+      {/* Profile Drawer / Modal */}
+      {profileOpen && (
+        <div className="fixed inset-0 z-[60] flex justify-end">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setProfileOpen(false)}
+          />
+          {/* Drawer */}
+          <div className="relative w-full max-w-2xl h-full bg-neutral-950 overflow-y-auto animate-in slide-in-from-right duration-300">
+            <div className="sticky top-0 bg-neutral-950 border-b border-neutral-800 p-4 flex items-center justify-between z-10">
+              <h2 className="text-lg font-semibold text-white">My Profile</h2>
+              <button 
+                onClick={() => setProfileOpen(false)}
+                className="text-neutral-400 hover:text-white p-2 rounded-md hover:bg-neutral-800 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              {profileData ? (
+                <EmployeeProfile data={profileData} />
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-neutral-400">Loading profile...</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Menu */}
       <div
