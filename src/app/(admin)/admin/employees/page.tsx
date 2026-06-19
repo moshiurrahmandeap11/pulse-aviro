@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import apiClient2 from "../../../../components/shared/Axios/AxiosInstance2";
+import apiClient2 from "@/components/shared/Axios/AxiosInstance2";
+import AddEmployeeModal from "@/components/adminComponents/AddEmployeeModal";
 
 // Types from your API response
 interface Employee {
@@ -69,6 +70,8 @@ const Employees = () => {
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [organizationId, setOrganizationId] = useState<string>("");
 
   const fetchEmployees = async (page = 1) => {
     try {
@@ -92,6 +95,13 @@ const Employees = () => {
   useEffect(() => {
     fetchEmployees(currentPage);
   }, [currentPage]);
+
+  // Extract organization ID from first employee (all have same org)
+  useEffect(() => {
+    if (employees.length > 0 && employees[0].organization_id) {
+      setOrganizationId(employees[0].organization_id);
+    }
+  }, [employees]);
 
   const filteredEmployees = employees.filter((emp) => {
     const query = searchQuery.toLowerCase();
@@ -192,7 +202,7 @@ const Employees = () => {
   }
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto">
+    <div className="p-6 lg:p-8 max-w-full mx-auto">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
@@ -201,7 +211,10 @@ const Employees = () => {
             {meta?.total ?? 0} total employees
           </p>
         </div>
-        <button className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center gap-2">
+        <button
+          onClick={() => setIsAddModalOpen(true)}
+          className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center gap-2"
+        >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
@@ -592,6 +605,13 @@ const Employees = () => {
           </div>
         </div>
       )}
+      {/* Add Employee Modal */}
+      <AddEmployeeModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSuccess={() => fetchEmployees(currentPage)}
+        organizationId={organizationId}
+      />
     </div>
   );
 };
