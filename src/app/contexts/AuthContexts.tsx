@@ -53,9 +53,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  console.log("user from auth context :", user);
-
   // /auth/me
   const fetchUser = useCallback(async () => {
     try {
