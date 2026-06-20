@@ -416,13 +416,14 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
       const createdEmployee = res.data.data;
       const employeeId = createdEmployee?.id;
 
-      // 2. If save & invite, send verification email
-      if (action === "save-and-invite" && employeeId && organizationId) {
+      // 2. If save & invite, send invitation email
+      if (action === "save-and-invite" && employeeId) {
         try {
           await apiClient2.post("/auth/send-verification-mail", {
             email: formData.email.trim(),
-            employeeId: employeeId,
-            organizationId: organizationId,
+            metadata: {
+              employeeId: employeeId,
+            },
           });
           showToast("Employee created and invitation email sent!", "success");
         } catch (inviteErr: any) {
