@@ -405,7 +405,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
         payload.organization_id = organizationId;
       }
 
-      const res = await apiClient2.post("/by-admin", payload);
+      const res = await apiClient2.post("/employees/by-admin", payload);
 
       if (!res.data?.success) {
         throw new Error(res.data?.message || "Failed to create employee");
