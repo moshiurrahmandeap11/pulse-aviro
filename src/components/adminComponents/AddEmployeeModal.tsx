@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import apiClient2 from "@/components/shared/Axios/AxiosInstance2";
+import apiClient from "../shared/Axios/AxiosInstance";
 
 // Types
 interface AccessLevel {
@@ -417,7 +418,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
       // 2. If save & invite, send invitation email
       if (action === "save-and-invite" && employeeId) {
         try {
-          await apiClient2.post("/auth/send-verification-email", {
+          await apiClient.post("/auth/send-verification-email", {
             email: formData.email.trim(),
             metadata: {
               employeeId: employeeId,
