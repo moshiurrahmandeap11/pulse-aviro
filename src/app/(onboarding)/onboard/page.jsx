@@ -5,6 +5,7 @@ const OnBoard = () => {
     return (
         <div>
             <OnBoardPage />
+            
         </div>
     );
 };
