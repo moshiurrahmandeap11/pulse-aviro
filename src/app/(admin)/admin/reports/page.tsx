@@ -1,9 +1,8 @@
+import Reports from '@/components/adminComponents/Reports'
 import React from 'react'
 
 const page = () => {
-  return (
-    <div>page</div>
-  )
+  return <Reports/>
 }
 
 export default page
