@@ -394,9 +394,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
         first_name: formData.first_name.trim(),
         last_name: formData.last_name.trim() || undefined,
         email: formData.email.trim(),
-        mobile: formData.mobile.trim() || undefined,
         access_level_id: formData.access_level_id || undefined,
-        timezone: formData.timezone || undefined,
         hire_date: formData.hire_date || undefined,
         schedule_ids: formData.schedule_ids.length > 0 ? formData.schedule_ids : undefined,
         position_ids: formData.position_ids.length > 0 ? formData.position_ids : undefined,
@@ -407,7 +405,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
         payload.organization_id = organizationId;
       }
 
-      const res = await apiClient2.post("/employees", payload);
+      const res = await apiClient2.post("/by-admin", payload);
 
       if (!res.data?.success) {
         throw new Error(res.data?.message || "Failed to create employee");
@@ -419,7 +417,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
       // 2. If save & invite, send invitation email
       if (action === "save-and-invite" && employeeId) {
         try {
-          await apiClient2.post("/auth/send-verification-mail", {
+          await apiClient2.post("/auth/send-verification-email", {
             email: formData.email.trim(),
             metadata: {
               employeeId: employeeId,
